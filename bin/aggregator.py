@@ -7,6 +7,11 @@ import urllib2
 import re
 import numpy
 from scipy import stats
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../clioinfra.js/modules')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../clioinfra.js')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+from storage import data2store, readdata
+from core.configutils import Configuration
 import openpyxl
 from openpyxl.cell import get_column_letter
 
@@ -106,12 +111,13 @@ def create_excel_dataset(fullpath, result):
     wb.save(fullpath)
     return fullpath
 
-project = "sentiments"
+c = Configuration()
+project = c.config['project']
 dbname = "kbs%sresult" % project
 trackdbname = "kbs%strack" % project
 data = aggregatedata(dbname)
 i = 0
 maindata = {}
 
-create_excel_dataset('/home/kb/projects/clioinfra.js/clioinfra/projects/static/sentiments.xlsx', data)
-    # u'polarity': u'0.089', u'title': u'Nieuwsblad van het Noorden', u'year': 1949, u'spatial': u'Groningen', u'subjectivity': u'0.515'}, u'observations': 5
+create_excel_dataset("%s/%s.xlsx" % (c.config['datapath'], project), data)
+# u'polarity': u'0.089', u'title': u'Nieuwsblad van het Noorden', u'year': 1949, u'spatial': u'Groningen', u'subjectivity': u'0.515'}, u'observations': 5
