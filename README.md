@@ -1,1 +1,1 @@
-# sentiment-mining
+Sentiment Mining project
