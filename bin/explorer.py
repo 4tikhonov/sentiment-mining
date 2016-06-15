@@ -93,9 +93,11 @@ def kb_explorer(c, query, projectname, dbname):
     return records
 
 project = "sentiments"
+project = "cruyff"
 prefix = "kbs"
 kbdata = "%s%s" % (prefix, project)
 data = readdata('projects', 'uri', project)
+c = Configuration()
 for item in data:
     projectname = item['uri']
     print projectname
@@ -103,5 +105,5 @@ for item in data:
     for keyword in keywords:
 	if keyword:
 	    print keyword
-#	    info = kb_explorer(keyword, projectname, kbdata)	
+	    info = kb_explorer(c, keyword, projectname, kbdata)	
 	
