@@ -39,8 +39,8 @@ def loadtrackdata(dbname, query):
     return result
 
 def create_excel_dataset(project, fullpath):
-    dbname = "kbs%sresult" % project
-    trackdbname = "kbs%strack" % project
+    dbname = "kb%sresult" % project
+    trackdbname = "kb%strack" % project
     result = aggregatedata(dbname)
 
     wb = openpyxl.Workbook(encoding='utf-8')
