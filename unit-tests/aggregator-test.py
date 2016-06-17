@@ -4,26 +4,25 @@ import sys
 import os
 import urllib2
 import re
-from pymongo import MongoClient
 from werkzeug import secure_filename
 from nltk import tokenize
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../clioinfra.js/modules')))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from storage import data2store, readdata
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../clioinfra.js')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from core.xmlprocessor import *
+from storage import data2store, readdata
+from core.metadataminer import request_kbmetadata, request_kbmetadata_fromweb
+from core.configutils import Configuration
+from core.aggregator import * 
 
-pid = "ddd:010285299:mpeg21:a0213"
-dbname = "kbstorage"
+c = Configuration()
+#project = c.config['project']
+project = "cruyff"
+dbname = "kbs%sresult" % project
+#trackdbname = "kbs%strack" % project
+#data = aggregatedata(dbname)
+#i = 0
+#maindata = {}
 
-data = readdata(dbname, 'pid', pid)
-for item in data:
-    item['fulltext'] = ''
-    main = item
-
-client = MongoClient()
-db = client.get_database(dbname)
-collection = db.data
-pipe = [ { '$group': { '_id': { 'publisher': "$publisher", 'year': "$year"}, 'observations': { '$sum': 1 } } } ]
-result = db.data.aggregate(pipeline=pipe)
-for x in result:
-    print "%s %s" % (str(x['_id']), x['observations'])
+datafile = create_excel_dataset(project, "%s/%s-new.xlsx" % (c.config['datapath'], project))
+print datafile
