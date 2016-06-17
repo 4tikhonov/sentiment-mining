@@ -113,11 +113,15 @@ def create_excel_dataset(fullpath, result):
 
 c = Configuration()
 project = c.config['project']
-dbname = "kbs%sresult" % project
-trackdbname = "kbs%strack" % project
+project = "scruyff"
+project = "sentiments"
+dbname = "result%s" % project
+trackdbname = "track%s" % project
 data = aggregatedata(dbname)
 i = 0
 maindata = {}
 
-create_excel_dataset("%s/%s.xlsx" % (c.config['datapath'], project), data)
+for iten in data:
+    print str(item)
+#create_excel_dataset("%s/%s.xlsx" % (c.config['datapath'], project), data)
 # u'polarity': u'0.089', u'title': u'Nieuwsblad van het Noorden', u'year': 1949, u'spatial': u'Groningen', u'subjectivity': u'0.515'}, u'observations': 5

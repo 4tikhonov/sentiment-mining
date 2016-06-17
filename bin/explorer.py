@@ -94,13 +94,14 @@ def kb_explorer(c, query, projectname, dbname):
 
 project = "sentiments"
 project = "cruyff"
-prefix = "kbs"
+
+prefix = "source"
 kbdata = "%s%s" % (prefix, project)
+print kbdata
 data = readdata('projects', 'uri', project)
 c = Configuration()
 for item in data:
     projectname = item['uri']
-    print projectname
     keywords = item['keywords'].split('\r\n')
     for keyword in keywords:
 	if keyword:

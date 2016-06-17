@@ -6,15 +6,20 @@ import os
 import urllib2
 import re
 import numpy
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../clioinfra.js/modules')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../clioinfra.js')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from werkzeug import secure_filename
 from nltk import tokenize
-from xmlprocessor import *
-from donlp import *
+from core.xmlprocessor import *
+from core.donlp import *
 
-project = "sentiments"
-dbname = "kbs%s" % project
-resultname = "%s%s" % (dbname, 'result')
-trackdb = "%s%s" % (dbname, 'track')
+projectname = "sentiments"
+projectname = "cruyff"
+
+dbname = "source%s" % projectname
+resultname = "%s%s" % (projectname, 'result')
+trackdb = "%s%s" % (projectname, 'track')
 
 client = MongoClient()
 db = client.get_database(dbname)
@@ -24,15 +29,16 @@ dbtrack = client.get_database(trackdb)
 dbtrack.data.drop()
 
 collection = db.data
-q = {"keyword" : "industrialisatie"}
-result = db.data.find(q).limit(50)
+#q = {"keyword" : "industrialisatie"}
+#result = db.data.find(q).limit(50)
 
-#q = {"projectname" : "sentiments"}
-#result = db.data.find(q)
+q = {"projectname" : projectname}
+result = db.data.find(q)
 newspapers = {}
 aggregated = []
 for item in result:
     query = item['keyword']
+    print query
     fulltext = item['fulltext']
 
     data = {}
