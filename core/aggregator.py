@@ -25,6 +25,14 @@ def aggregatedata(dbname):
 #        print str(x)
     return result
 
+def projectdata(dbname):
+    client = MongoClient()
+    db = client.get_database(dbname)
+    collection = db.data
+    data = db.data.find()
+
+    return data
+
 def loadtrackdata(dbname, query):
     client = MongoClient()
     db = client.get_database(dbname)
@@ -38,9 +46,39 @@ def loadtrackdata(dbname, query):
 #        print str(x)
     return result
 
+def striphtml(data):
+    p = re.compile(r'<.*?>')
+    return p.sub('', data)
+
+def excel_dataset(project, fullpath):
+    dbname = "%sresult" % project
+    data = projectdata(project)
+
+    wb = openpyxl.Workbook(encoding='utf-8')
+    ws = wb.get_active_sheet()
+    ws.title = "Dataset"
+    ws.column_dimensions["A"].width = 160
+    ws.column_dimensions["B"].width = 60
+    ws.column_dimensions["C"].width = 20
+
+    i = 1
+    for item in data:
+	del item['_id']
+	item['text'] = striphtml(item['text'])
+	j = 1
+	for name in item:
+            c = ws.cell(row=i, column=j)
+            c.value = item[name]
+            j+=1
+	i+=1
+
+    wb.save(fullpath)
+    return fullpath
+
 def create_excel_dataset(project, fullpath):
-    dbname = "kb%sresult" % project
-    trackdbname = "kb%strack" % project
+    dbname = "%sresult" % project
+    print dbname
+    trackdbname = "%strack" % project
     result = aggregatedata(dbname)
 
     wb = openpyxl.Workbook(encoding='utf-8')
